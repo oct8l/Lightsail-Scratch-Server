@@ -36,6 +36,7 @@ resource "aws_lightsail_instance" "scratch_server" {
     chmod 600 /home/${var.ssh_username}/.ssh/authorized_keys
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
     systemctl restart sshd
+    echo -e "ubuntu\nubuntu" | sudo passwd ubuntu
     apt update
   EOF
 }
