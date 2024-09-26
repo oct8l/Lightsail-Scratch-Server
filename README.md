@@ -5,7 +5,7 @@ I wanted a quick and easy way to deploy an AWS Lightsail instance and have it be
 
 ## How do I use it?
 Here is the "intended" way for this repo to be used:
-1. Download the repo, optionally as a zip folder, and delete the folder after every time you set up the WireGuard server.
+1. Download the repo, optionally as a zip folder.
 2. This repo assumes you have [https://direnv.net/](https://direnv.net/) installed to load and unload the `.envrc` files when changing directories. I'd recommend installing it, otherwise if you're so inclined, you can manage the environment variables through another package or manually.
 3. Change to the new directory for the repo once you have the folder downloaded/unzipped/un-tar'd/etc.
 4. Update your variables for your AWS region in `.envrc`. Ensure your AWS credentials are set up in the `~/.aws` folder as per the AWS CLI configuration. For help setting up these credentials, visit [AWS CLI Configuration](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
@@ -14,10 +14,10 @@ Here is the "intended" way for this repo to be used:
 
 ### Copy and pasteable commands for the trusting
 ```sh
-wget https://github.com/oct8l/Lightsail-WireGuard-one-shot/archive/refs/heads/main.tar.gz
+wget https://github.com/oct8l/Lightsail-Scratch-Server/archive/refs/heads/main.tar.gz
 tar -xzf main.tar.gz
 rm main.tar.gz
-cd Lightsail-WireGuard-one-shot-main
+cd Lightsail-Scratch-Server
 chmod +x *.sh
 vi .envrc
 ```

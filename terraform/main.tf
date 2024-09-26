@@ -24,8 +24,8 @@ provider "aws" {
   profile = "default"
 }
 
-resource "aws_lightsail_instance" "wg_tunnel" {
-  name                = "wg_tunnel-${random_string.instance_suffix.result}"
+resource "aws_lightsail_instance" "scratch_server" {
+  name                = "scratch_server-${random_string.instance_suffix.result}"
   availability_zone   = "us-east-2c"
   blueprint_id        = "ubuntu_22_04"
   bundle_id           = "nano_2_0"
@@ -40,7 +40,7 @@ resource "aws_lightsail_instance" "wg_tunnel" {
 }
 
 resource "aws_lightsail_instance_public_ports" "ssh" {
-  instance_name = aws_lightsail_instance.wg_tunnel.name
+  instance_name = aws_lightsail_instance.scratch_server.name
 
   port_info {
     protocol  = "tcp"
@@ -70,5 +70,5 @@ variable "ssh_username" {
 }
 
 output "public_ip" {
-  value = aws_lightsail_instance.wg_tunnel.public_ip_address
+  value = aws_lightsail_instance.scratch_server.public_ip_address
 }

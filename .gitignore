@@ -1,6 +1,3 @@
-#### Wireguard configs ####
-ansible/clients*
-
 #### Generated SSH keys ####
 id_rsa
 id_rsa.pub
