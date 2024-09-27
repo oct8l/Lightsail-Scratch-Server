@@ -18,5 +18,7 @@ cd terraform
 terraform destroy -auto-approve
 ############################################################
 
+rm terraform/terraform.tfstate
+rm terraform/terraform.tfstate.backup
 
 printf "\n\e[32m---------\nALL GONE\n---------\e[0m\n\n"
