@@ -21,26 +21,38 @@ resource "random_string" "instance_suffix" {
 
 provider "aws" {
   region  = "us-east-2"
-  profile = "default"
+  profile = "chez-scratch"
 }
 
-resource "aws_lightsail_instance" "wg_tunnel" {
-  name                = "wg_tunnel-${random_string.instance_suffix.result}"
+resource "aws_lightsail_instance" "scratch_server" {
+  name                = "scratch_server-${random_string.instance_suffix.result}"
   availability_zone   = "us-east-2c"
-  blueprint_id        = "ubuntu_22_04"
+  blueprint_id        = "ubuntu_24_04"
   bundle_id           = "nano_2_0"
 
   user_data           = <<-EOF
+    #!/bin/bash
     echo "${var.pubkey}" >> /home/${var.ssh_username}/.ssh/authorized_keys
     chown -R ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/.ssh
     chmod 600 /home/${var.ssh_username}/.ssh/authorized_keys
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
     systemctl restart sshd
+
+    # Change the password for the ubuntu user
+    echo -e "ubuntu\nubuntu" | passwd ubuntu
+
+    # Update and install chezmoi
+    apt update
+    sh -c "$(curl -fsLS get.chezmoi.io)"
+    mv /home/ubuntu/bin/chezmoi /usr/local/bin/chezmoi
+    chmod +x /usr/local/bin/chezmoi
+    chown ubuntu:ubuntu /usr/local/bin/chezmoi
+    rm -rf /home/ubuntu/bin
   EOF
 }
 
 resource "aws_lightsail_instance_public_ports" "ssh" {
-  instance_name = aws_lightsail_instance.wg_tunnel.name
+  instance_name = aws_lightsail_instance.scratch_server.name
 
   port_info {
     protocol  = "tcp"
@@ -70,5 +82,5 @@ variable "ssh_username" {
 }
 
 output "public_ip" {
-  value = aws_lightsail_instance.wg_tunnel.public_ip_address
+  value = aws_lightsail_instance.scratch_server.public_ip_address
 }
