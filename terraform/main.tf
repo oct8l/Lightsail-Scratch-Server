@@ -32,6 +32,7 @@ resource "aws_lightsail_instance" "scratch_server" {
 
   user_data           = <<-EOF
     #!/bin/bash
+    # Add the public key to the authorized keys file
     echo "${var.pubkey}" >> /home/${var.ssh_username}/.ssh/authorized_keys
     chown -R ${var.ssh_username}:${var.ssh_username} /home/${var.ssh_username}/.ssh
     chmod 600 /home/${var.ssh_username}/.ssh/authorized_keys
